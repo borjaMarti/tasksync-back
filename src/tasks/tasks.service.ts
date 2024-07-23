@@ -1,24 +1,30 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { Task, Prisma } from '@prisma/client';
+import { Task } from '@prisma/client';
 import { TasksGateway } from './tasks.gateway';
 import { ClientProxy } from '@nestjs/microservices';
+import { TasksRepository } from './tasks.repository';
 
 @Injectable()
 export class TasksService {
   constructor(
-    private prisma: PrismaService,
+    private repository: TasksRepository,
     private tasksGateway: TasksGateway,
     @Inject('EMAIL_SERVICE') private client: ClientProxy,
   ) {}
 
   async findAllTasks(): Promise<Task[]> {
-    return this.prisma.task.findMany();
+    const tasks = await this.repository.getTasks();
+    return tasks;
   }
 
-  async createTask(data: Prisma.TaskCreateInput): Promise<Task> {
-    const task = await this.prisma.task.create({
-      data,
+  async createTask(params: {
+    title: Task['title'];
+    priority: Task['priority'];
+  }): Promise<Task> {
+    const { title, priority } = params;
+    const task = await this.repository.createTask({
+      title,
+      priority,
     });
     this.tasksGateway.sendEvent('tasksUpdated');
     this.client.emit('taskCreated', task);
@@ -26,21 +32,24 @@ export class TasksService {
   }
 
   async updateTask(params: {
-    where: Prisma.TaskWhereUniqueInput;
-    data: Prisma.TaskUpdateInput;
+    id: Task['id'];
+    data: {
+      title?: Task['title'];
+      priority?: Task['priority'];
+    };
   }): Promise<Task> {
-    const { where, data } = params;
-    const task = await this.prisma.task.update({
+    const { id, data } = params;
+    const task = await this.repository.updateTask({
+      id: { id },
       data,
-      where,
     });
     this.tasksGateway.sendEvent('tasksUpdated');
     return task;
   }
 
-  async removeTask(where: Prisma.TaskWhereUniqueInput): Promise<Task> {
-    const task = await this.prisma.task.delete({
-      where,
+  async deleteTask(id: Task['id']): Promise<Task> {
+    const task = await this.repository.deleteTask({
+      id,
     });
     this.tasksGateway.sendEvent('tasksUpdated');
     return task;

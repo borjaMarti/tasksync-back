@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/database/prisma.service';
 import { TasksGateway } from './tasks.gateway';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 

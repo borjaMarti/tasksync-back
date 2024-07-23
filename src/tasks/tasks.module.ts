@@ -1,14 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { TasksController } from './tasks.controller';
-import { PrismaService } from 'src/prisma.service';
 import { TasksGateway } from './tasks.gateway';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { TasksRepository } from './tasks.repository';
+import { PrismaModule } from 'src/database/prisma.module';
 
 @Module({
   controllers: [TasksController],
-  providers: [TasksService, PrismaService, TasksGateway],
+  providers: [TasksRepository, TasksService, TasksGateway],
   imports: [
+    PrismaModule,
     ClientsModule.register([
       {
         name: 'EMAIL_SERVICE',
