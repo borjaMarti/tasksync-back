@@ -1,15 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
-import { PrismaService } from 'src/database/prisma.service';
 import { TasksGateway } from './tasks.gateway';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { TasksRepository } from './tasks.repository';
+import { PrismaService } from 'src/database/prisma.service';
 
 describe('TasksService', () => {
   let service: TasksService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [TasksService, PrismaService, TasksGateway],
+      providers: [TasksService, TasksRepository, TasksGateway, PrismaService],
       imports: [
         ClientsModule.register([
           {

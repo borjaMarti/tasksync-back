@@ -4,6 +4,7 @@ import { TasksService } from './tasks.service';
 import { TasksGateway } from './tasks.gateway';
 import { PrismaService } from 'src/database/prisma.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { TasksRepository } from './tasks.repository';
 
 describe('TasksController', () => {
   let controller: TasksController;
@@ -11,7 +12,7 @@ describe('TasksController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TasksController],
-      providers: [TasksService, PrismaService, TasksGateway],
+      providers: [TasksService, PrismaService, TasksGateway, TasksRepository],
       imports: [
         ClientsModule.register([
           {

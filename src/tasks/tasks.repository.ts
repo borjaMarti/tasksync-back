@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Task } from '@prisma/client';
 import { PrismaService } from 'src/database/prisma.service';
+import TasksRepositoryInterface from './tasks.repository.interface';
 
 @Injectable()
-export class TasksRepository {
+export class TasksRepository implements TasksRepositoryInterface {
   constructor(private prisma: PrismaService) {}
 
   async getTasks(): Promise<Task[]> {

@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import EmailRepositoryInterface from './email.repository.interface';
 
 @Injectable()
-export class EmailRepository {
+export class EmailRepository implements EmailRepositoryInterface {
   private transporter: nodemailer.Transporter;
   constructor() {
     this.transporter = nodemailer.createTransport({

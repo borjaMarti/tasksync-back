@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+// Borja: Used this for initial db seeding.
 const prisma = new PrismaClient();
 async function main() {
   await prisma.task.upsert({

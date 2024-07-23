@@ -4,6 +4,7 @@ import { TasksGateway } from './tasks.gateway';
 import { ClientProxy } from '@nestjs/microservices';
 import { TasksRepository } from './tasks.repository';
 
+// Borja: Service is kept agnostic to the persistence layer by using a repository.
 @Injectable()
 export class TasksService {
   constructor(
