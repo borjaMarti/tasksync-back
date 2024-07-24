@@ -17,13 +17,13 @@ export class EmailRepository implements EmailRepositoryInterface {
     });
   }
 
-  async sendTaskCreatedEmail(mail: {
+  async sendTaskCreatedEmail(email: {
     from: string;
     to: string;
     subject: string;
     text: string;
     html: string;
   }) {
-    await this.transporter.sendMail(mail);
+    await this.transporter.sendMail(email);
   }
 }
