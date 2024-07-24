@@ -2,10 +2,11 @@
 
 TaskSync allows your team to keep track of tasks with real-time updates, notifying you by email when new tasks are added.
 
-- Built with [NestJS](https://nestjs.com/).
-- ORM by [Prisma](https://www.prisma.io/).
-- Data persistence with [SQLite](https://www.sqlite.org).
-- Message brokering with [RabbitMQ](https://www.rabbitmq.com/).
+- Built with [NestJS](https://nestjs.com/)
+- ORM by [Prisma](https://www.prisma.io/)
+- Data persistence with [SQLite](https://www.sqlite.org)
+- Websockets with via [Socket.IO](https://socket.io/)
+- Message brokering with [RabbitMQ](https://www.rabbitmq.com/)
 
 [TaskSync (Front-End)](https://github.com/borjamarti/tasksync-front)
 
