@@ -6,27 +6,19 @@ import {
   Put,
   Param,
   Delete,
-  BadRequestException,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from '@prisma/client';
-import { Priority } from './tasks.interface';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  async createTask(
-    @Body() taskData: { title: string; priority: Priority },
-  ): Promise<Task> {
-    if (!Object.values(Priority).includes(taskData.priority)) {
-      throw new BadRequestException(
-        `Invalid priority value: ${taskData.priority}`,
-        { cause: new Error(), description: `Priority should be a valid value` },
-      );
-    }
-    return this.tasksService.createTask(taskData);
+  async createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto);
   }
 
   @Get()
@@ -37,20 +29,11 @@ export class TasksController {
   @Put(':id')
   async updateTask(
     @Param('id') id: string,
-    @Body() taskData: { title?: string; priority?: Priority },
+    @Body() updateTaskDto: UpdateTaskDto,
   ): Promise<Task> {
-    if (
-      taskData.priority &&
-      !Object.values(Priority).includes(taskData.priority)
-    ) {
-      throw new BadRequestException(
-        `Invalid priority value: ${taskData.priority}`,
-        { cause: new Error(), description: `Priority should be a valid value` },
-      );
-    }
     return this.tasksService.updateTask({
       id,
-      data: taskData,
+      data: updateTaskDto,
     });
   }
 

@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { EmailService } from 'src/email/email.service';
+import { SendTaskCreatedEmailDto } from './dto/send-task-created-email.dto';
 
 @Controller()
 export class EmailController {
@@ -8,8 +9,8 @@ export class EmailController {
 
   @MessagePattern('taskCreated')
   async handleTaskCreated(
-    @Payload() task: { title: string; priority: string },
+    @Payload() sendTaskCreatedEmailDto: SendTaskCreatedEmailDto,
   ): Promise<void> {
-    await this.emailService.sendTaskCreatedEmail(task);
+    await this.emailService.sendTaskCreatedEmail(sendTaskCreatedEmailDto);
   }
 }
